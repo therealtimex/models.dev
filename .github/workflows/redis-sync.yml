@@ -20,9 +20,17 @@ jobs:
         with:
           fetch-depth: 0
       
-      - name: Debug - List changed files
+      - name: Get changed files
+        id: changed-files
         run: |
-          git diff --name-only ${{ github.event.before }} ${{ github.sha }}
+          if [ "${{ github.event_name }}" == "push" ]; then
+            # For push events, get changed files between before and after
+            echo "CHANGED_FILES=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '\.toml$' | tr '\n' ' ')" >> $GITHUB_ENV
+          else
+            # For workflow_dispatch, get all TOML files
+            echo "CHANGED_FILES=$(find providers -name '*.toml' | tr '\n' ' ')" >> $GITHUB_ENV
+          fi
+          echo "Changed TOML files: $CHANGED_FILES"
       
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -34,11 +42,12 @@ jobs:
           python -m pip install --upgrade pip
           pip install redis
       
-      - name: Scan TOML files and sync to Redis
+      - name: Sync modified TOML files to Redis
         env:
           REALTIMEX_AI_LLM_REDIS_HOST: ${{ secrets.REALTIMEX_AI_LLM_REDIS_HOST }}
           REALTIMEX_AI_LLM_REDIS_PASSWORD: ${{ secrets.REALTIMEX_AI_LLM_REDIS_PASSWORD }}
           REALTIMEX_AI_LLM_REDIS_PORT: ${{ secrets.REALTIMEX_AI_LLM_REDIS_PORT }}
           REALTIMEX_AI_LLM_REDIS_DB: ${{ secrets.REALTIMEX_AI_LLM_REDIS_DB }}
+          CHANGED_FILES: ${{ env.CHANGED_FILES }}
         run: |
           python .github/scripts/sync_toml_to_redis.py
