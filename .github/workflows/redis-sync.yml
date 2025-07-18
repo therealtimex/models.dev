@@ -2,9 +2,12 @@ name: Sync TOML to Redis
 
 on:
   push:
-    branches: [ realtimex ]
+    branches: 
+      - realtimex
     paths:
       - 'providers/**/*.toml'
+      - '.github/scripts/sync_toml_to_redis.py'
+      - '.github/workflows/redis-sync.yml'
   workflow_dispatch:
 
 jobs:
@@ -14,6 +17,12 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      
+      - name: Debug - List changed files
+        run: |
+          git diff --name-only ${{ github.event.before }} ${{ github.sha }}
       
       - name: Set up Python
         uses: actions/setup-python@v4
