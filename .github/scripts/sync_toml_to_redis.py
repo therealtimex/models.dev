@@ -12,7 +12,7 @@ def main():
         host=os.environ.get('REALTIMEX_AI_LLM_REDIS_HOST', 'rta.rtworkspace.com'),
         password=os.environ.get('REALTIMEX_AI_LLM_REDIS_PASSWORD', ''),
         port=int(os.environ.get('REALTIMEX_AI_LLM_REDIS_PORT', 6379)),
-        db=int(os.environ.get('REALTIMEX_AI_LLM_REDIS_DB', 9))
+        db=int(os.environ.get('REALTIMEX_AI_LLM_REDIS_DB', 0))
     )
     
     # Find all provider directories
