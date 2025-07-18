@@ -2,7 +2,7 @@ name: Sync TOML to Redis
 
 on:
   push:
-    branches: [ main ]
+    branches: [ realtimex ]
     paths:
       - 'providers/**/*.toml'
   workflow_dispatch:
