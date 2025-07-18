@@ -1,0 +1,5 @@
+name = "RealTimeX.AI"
+env = ["REALTIMEX_API_KEY"]
+npm = "@ai-sdk/openai-compatible"
+api = "https://llm.realtimex.ai/v1"
+doc = "https://llm.realtimex.ai/v1/models"
