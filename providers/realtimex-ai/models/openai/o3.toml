@@ -1,10 +1,10 @@
-name = "GPT-4.1"
-release_date = "2025-04-14"
-last_updated = "2025-04-14"
+name = "o3"
+release_date = "2025-04-16"
+last_updated = "2025-04-16"
 attachment = true
-reasoning = false
-temperature = true
-knowledge = "2024-04"
+reasoning = true
+temperature = false
+knowledge = "2024-05"
 tool_call = true
 open_weights = false
 
@@ -14,8 +14,8 @@ output = 8.00
 cache_read = 0.50
 
 [limit]
-context = 1_047_576
-output = 32_768
+context = 200_000
+output = 100_000
 
 [modalities]
 input = ["text", "image"]
