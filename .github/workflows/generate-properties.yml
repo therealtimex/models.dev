@@ -1,0 +1,37 @@
+name: Generate Model Properties
+
+on:
+  push:
+    branches:
+      - realtimex
+    paths:
+      - 'providers/**/*.toml'
+      - 'scripts/generate-properties.js'
+      - '.github/workflows/generate-properties.yml'
+  workflow_dispatch:
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        run: |
+          npm install glob toml --save-dev
+
+      - name: Generate model properties
+        run: node scripts/generate-properties.js
+
+      - name: Commit and push changes
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: 'chore: update model-properties.json'
+          file_pattern: 'dist/model-properties.json'
