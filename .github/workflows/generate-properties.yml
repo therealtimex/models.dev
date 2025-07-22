@@ -1,4 +1,4 @@
-name: Generate Model Properties
+name: Generate and Deploy Model Properties
 
 on:
   push:
@@ -10,10 +10,14 @@ on:
       - '.github/workflows/generate-properties.yml'
   workflow_dispatch:
 
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
 jobs:
   generate:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -34,3 +38,19 @@ jobs:
         with:
           commit_message: 'chore: update model-properties.json'
           file_pattern: 'dist/model-properties.json'
+      
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './dist'
+
+  deploy:
+    needs: generate
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
