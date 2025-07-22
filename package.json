@@ -15,5 +15,9 @@
   },
   "dependencies": {
     "sst": "3.17.5"
+  },
+  "devDependencies": {
+    "glob": "^11.0.3",
+    "toml": "^3.0.0"
   }
 }
