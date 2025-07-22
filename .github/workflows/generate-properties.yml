@@ -24,8 +24,7 @@ jobs:
           bun-version: latest
 
       - name: Install dependencies
-        run: |
-          npm install glob toml --save-dev
+        run: bun install
 
       - name: Generate model properties
         run: node scripts/generate-properties.js
